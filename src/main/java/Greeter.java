@@ -4,7 +4,8 @@
  */
 public class Greeter {
     public static String greet(String name) {
-        if (name == null || name.isEmpty()) {
+        //if (name == null || name.isEmpty()) {
+        if (name.isBlank()) {
             return "Hello, stranger!";
         }
         return "Hello, " + name + "!";
