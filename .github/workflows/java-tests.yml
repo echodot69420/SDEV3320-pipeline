@@ -1,17 +1,23 @@
-name: Run Java Tests                 # WORKFLOW: the complete automated process
+name: Run Java Tests                 # WORKFLOW
 
-on:                                  # EVENT (TRIGGER): what starts the workflow
-  push:                              # EVENT: run after code is pushed
-  workflow_dispatch:                 # EVENT: also allow a manual run
+on:                                  # EVENT (TRIGGER)
+  push:                              # EVENT
+  workflow_dispatch:                 # EVENT
 
-jobs:                                # JOB: named units of work in the workflow
-  test:                              # JOB: this job is named "test"
-    runs-on: ubuntu-latest           # RUNNER: the machine executing the job
-    steps:                           # STEPS: individual tasks in this job
-      - uses: actions/checkout@v4    # ACTION: reusable step that checks out the repo
-      - uses: actions/setup-java@v4  # ACTION: reusable step that installs/configures Java
-        with:                        # STEP configuration for the setup-java action
-          distribution: temurin      # STEP configuration: choose the Java distribution
-          java-version: "17"         # STEP configuration: choose the Java version
-          cache: maven               # STEP configuration: cache Maven dependencies
-      - run: mvn test                # STEP: shell command that compiles and runs JUnit tests
+jobs:                                # JOB
+  test:                              # JOB
+    runs-on: ubuntu-latest           # RUNNER
+
+    strategy:
+      matrix:
+        java-version: ["8", "17"]
+
+    steps:                           # STEPS
+      - uses: actions/checkout@v4    # ACTION
+      - uses: actions/setup-java@v4  # ACTION
+        with:                        # STEP
+          distribution: temurin      # STEP
+          java-version: ${{ matrix.java-version }}         # STEP
+          cache: maven               # STEP
+          
+      - run: mvn test                # STEP
