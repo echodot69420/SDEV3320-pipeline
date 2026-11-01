@@ -1,0 +1,17 @@
+name: Run Java Tests                 # WORKFLOW: the complete automated process
+
+on:                                  # EVENT (TRIGGER): what starts the workflow
+  push:                              # EVENT: run after code is pushed
+  workflow_dispatch:                 # EVENT: also allow a manual run
+
+jobs:                                # JOB: named units of work in the workflow
+  test:                              # JOB: this job is named "test"
+    runs-on: ubuntu-latest           # RUNNER: the machine executing the job
+    steps:                           # STEPS: individual tasks in this job
+      - uses: actions/checkout@v4    # ACTION: reusable step that checks out the repo
+      - uses: actions/setup-java@v4  # ACTION: reusable step that installs/configures Java
+        with:                        # STEP configuration for the setup-java action
+          distribution: temurin      # STEP configuration: choose the Java distribution
+          java-version: "17"         # STEP configuration: choose the Java version
+          cache: maven               # STEP configuration: cache Maven dependencies
+      - run: mvn test                # STEP: shell command that compiles and runs JUnit tests
